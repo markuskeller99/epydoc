@@ -2681,9 +2681,16 @@ class HTMLWriter:
 
         if func_doc.posargs == UNKNOWN:
             args = ['...']
+        elif func_doc.posargs == ['...']:
+            #HACK for boost python functions. posargs is empty so pull the parameters from arg_descrs
+            args = func_doc.posargs
+            if isinstance(api_doc.value, RoutineDoc):
+                if str(api_doc.value.pyval).startswith("<Boost.Python.function object at"):
+                    args = [self.func_arg(i[0][0], None, css_class) for i in api_doc.value.arg_descrs]
         else:
             args = [self.func_arg(n, d, css_class) for (n, d)
                     in zip(func_doc.posargs, func_doc.posarg_defaults)]
+
         if func_doc.vararg not in (None, UNKNOWN):
             if func_doc.vararg == '...':
                 args.append('<span class="%s-arg">...</span>' % css_class)
