@@ -1297,10 +1297,10 @@ class HTMLWriter:
             if isinstance(doc, ModuleDoc):
                 out('    <a target="moduleFrame" href="%s"\n'
                     '     onclick="setFrame(\'%s\',\'%s\');"'
-                    '     >%s</a><br />' % (toc_url, toc_url, doc_url, label))
+                    '     >%s</a><br />' % (toc_url, toc_url, doc_url, re.sub(r"___\d+", '', label)))
             else:
                 out('    <a target="mainFrame" href="%s"\n'
-                    '     >%s</a><br />' % (doc_url, label))
+                    '     >%s</a><br />' % (doc_url, re.sub(r"___\d+", '', label)))
             if is_private:
                 out('  </div>\n')
 
@@ -2403,14 +2403,6 @@ class HTMLWriter:
         >>> else:
         >>>   decos = None
         >>> #endif
-        >>> if decos:
-            <dt>Decorators:</dt>
-            <dd><ul class="nomargin-top">
-        >>>   for deco in decos:
-                <li><code>@$deco$</code></li>
-        >>>   #endfor
-            </ul></dd>
-        >>> #endif
         >>> # === exceptions ===
         >>> if func_doc.exception_descrs not in (None, UNKNOWN, (), []):
             <dt>Raises:</dt>
@@ -2727,8 +2719,11 @@ class HTMLWriter:
 
         if link_name:
             rv += self.href(api_doc, css_class=css_class)
+            rv = re.sub(r"___\d+</a>", '</a>', rv)
         else:
-            rv += '<span class="%s">%s</span>' % (css_class, api_doc.name)
+            name = api_doc.name
+            name = re.sub(r"___\d+", '', name)
+            rv += '<span class="%s">%s</span>' % (css_class, name)
 
         return rv
 

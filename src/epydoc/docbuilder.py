@@ -746,7 +746,7 @@ MERGE_PRECEDENCE = {
 
     # The names we get from introspection match the names that users
     # can actually use -- i.e., they take magic into account.
-    'canonical_name': 'introspect',
+    'canonical_name': 'parse',
 
     # Only fall-back on the parser for is_imported if the introspecter
     # isn't sure.  Otherwise, we can end up thinking that vars
@@ -777,13 +777,13 @@ MERGE_PRECEDENCE = {
     # 'parse' is more likely to get the encoding right, but
     # 'introspect' will handle programatically generated docstrings.
     # Which is better?
-    'docstring': 'introspect',
+    'docstring': 'parse',
     }
 """Indicates whether information from introspection or parsing should be
 given precedence, for specific attributes.  This dictionary maps from
 attribute names to either C{'introspect'} or C{'parse'}."""
 
-DEFAULT_MERGE_PRECEDENCE = 'introspect'
+DEFAULT_MERGE_PRECEDENCE = 'parse'
 """Indicates whether information from introspection or parsing should be
 given precedence.  Should be either C{'introspect'} or C{'parse'}"""
 
